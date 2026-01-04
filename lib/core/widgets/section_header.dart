@@ -14,6 +14,8 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,17 +23,20 @@ class SectionHeader extends StatelessWidget {
           children: [
             Container(
               width: 4.w,
-              height: 32.h,
+              height: isMobile ? 24.h : 32.h,
               decoration: BoxDecoration(
                 color: AppColors.accent,
                 borderRadius: BorderRadius.circular(2.r),
               ),
             ),
             SizedBox(width: 16.w),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+            Expanded(
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontSize: isMobile ? 24.sp : null,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -43,13 +48,14 @@ class SectionHeader extends StatelessWidget {
             child: Text(
               subtitle!,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: isMobile ? 14.sp : null,
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w400,
               ),
             ),
           ),
         ],
-        SizedBox(height: 32.h),
+        SizedBox(height: isMobile ? 24.h : 32.h),
       ],
     );
   }

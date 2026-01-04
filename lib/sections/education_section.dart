@@ -9,8 +9,13 @@ class EducationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 80.w, vertical: 80.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20.w : 80.w, 
+        vertical: isMobile ? 60.h : 80.h
+      ),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,19 +25,28 @@ class EducationSection extends StatelessWidget {
             subtitle: 'My academic background and qualifications',
           ),
           
-          Row(
-            children: PortfolioData.educations.asMap().entries.map((entry) {
-              final education = entry.value;
-              return Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    right: entry.key < PortfolioData.educations.length - 1 ? 24.w : 0,
-                  ),
-                  child: _EducationCard(education: education),
-                ),
-              );
-            }).toList(),
-          ),
+          isMobile 
+            ? Column(
+                children: PortfolioData.educations.map((education) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: _EducationCard(education: education),
+                  );
+                }).toList(),
+              )
+            : Row(
+                children: PortfolioData.educations.asMap().entries.map((entry) {
+                  final education = entry.value;
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: entry.key < PortfolioData.educations.length - 1 ? 24.w : 0,
+                      ),
+                      child: _EducationCard(education: education),
+                    ),
+                  );
+                }).toList(),
+              ),
         ],
       ),
     );
@@ -54,12 +68,14 @@ class _EducationCardState extends State<_EducationCard>
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(isMobile ? 20.w : 24.w),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16.r),
@@ -84,7 +100,7 @@ class _EducationCardState extends State<_EducationCard>
           children: [
             // Icon
             Container(
-              padding: EdgeInsets.all(12.w),
+              padding: EdgeInsets.all(isMobile ? 10.w : 12.w),
               decoration: BoxDecoration(
                 color: AppColors.accent.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12.r),
@@ -92,7 +108,7 @@ class _EducationCardState extends State<_EducationCard>
               child: Icon(
                 Icons.school_outlined,
                 color: AppColors.accent,
-                size: 24.sp,
+                size: isMobile ? 20.sp : 24.sp,
               ),
             ),
             
@@ -102,6 +118,7 @@ class _EducationCardState extends State<_EducationCard>
             Text(
               widget.education.degree,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: isMobile ? 16.sp : null,
                 fontWeight: FontWeight.w600,
                 color: AppColors.accent,
               ),
@@ -113,6 +130,7 @@ class _EducationCardState extends State<_EducationCard>
             Text(
               widget.education.institution,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: isMobile ? 14.sp : null,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textPrimary,
                 height: 1.4,
@@ -126,14 +144,17 @@ class _EducationCardState extends State<_EducationCard>
               children: [
                 Icon(
                   Icons.calendar_today_outlined,
-                  size: 16.sp,
+                  size: isMobile ? 14.sp : 16.sp,
                   color: AppColors.textSecondary,
                 ),
                 SizedBox(width: 6.w),
-                Text(
-                  widget.education.duration,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                Expanded(
+                  child: Text(
+                    widget.education.duration,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: isMobile ? 12.sp : null,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
               ],
@@ -145,7 +166,7 @@ class _EducationCardState extends State<_EducationCard>
               children: [
                 Icon(
                   Icons.location_on_outlined,
-                  size: 16.sp,
+                  size: isMobile ? 14.sp : 16.sp,
                   color: AppColors.textSecondary,
                 ),
                 SizedBox(width: 6.w),
@@ -153,6 +174,7 @@ class _EducationCardState extends State<_EducationCard>
                   child: Text(
                     widget.education.location,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: isMobile ? 12.sp : null,
                       color: AppColors.textSecondary,
                     ),
                   ),

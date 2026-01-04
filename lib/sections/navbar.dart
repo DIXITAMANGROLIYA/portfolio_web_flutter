@@ -29,9 +29,11 @@ class _NavbarState extends State<Navbar> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Container(
       height: 72.h,
-      padding: EdgeInsets.symmetric(horizontal: 80.w),
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 20.w : 80.w),
       decoration: BoxDecoration(
         color: AppColors.surface.withValues(alpha: 0.95),
         border: Border(bottom: BorderSide(color: AppColors.border, width: 1)),
@@ -42,41 +44,55 @@ class _NavbarState extends State<Navbar> {
           /// Logo
           _Logo(),
 
-          /// Navigation items
-          Row(
-            children: [
-              Row(
-                children: List.generate(_navItems.length, (index) {
-                  final item = _navItems[index];
-                  if ((item.title.isNotEmpty)) {
-                    return _NavItem(
-                      title: item.title,
-                      isSelected: _selectedIndex == index,
-                      onTap: () {
-                        setState(() => _selectedIndex = index);
-                        ScrollService.scrollTo(item.key);
-                      },
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                }),
+          if (isMobile) ...[
+            /// Mobile: Just show resume button
+            ElevatedButton.icon(
+              onPressed: () {
+                AppUtils.launchExternalUrl('https://drive.google.com/file/d/1LrVeL9hbm3ACUph23ZErwDKafBavK9ke/view?usp=sharing');
+              },
+              icon: Icon(Icons.download_outlined, size: 14.sp),
+              label: const Text('Resume'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                textStyle: TextStyle(fontSize: 12.sp),
               ),
-              SizedBox(width: 40.w),
-              /// CTA
-              ElevatedButton.icon(
-                onPressed: () {
-                  // view resume
-                  AppUtils.launchExternalUrl('https://drive.google.com/file/d/1LrVeL9hbm3ACUph23ZErwDKafBavK9ke/view?usp=sharing');
-                },
-                icon: Icon(Icons.download_outlined, size: 16.sp),
-                label: const Text('Resume'),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+            ),
+          ] else ...[
+            /// Desktop Navigation
+            Row(
+              children: [
+                Row(
+                  children: List.generate(_navItems.length, (index) {
+                    final item = _navItems[index];
+                    if ((item.title.isNotEmpty)) {
+                      return _NavItem(
+                        title: item.title,
+                        isSelected: _selectedIndex == index,
+                        onTap: () {
+                          setState(() => _selectedIndex = index);
+                          ScrollService.scrollTo(item.key);
+                        },
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  }),
                 ),
-              ),
-            ],
-          ),
+                SizedBox(width: 40.w),
+                /// CTA
+                ElevatedButton.icon(
+                  onPressed: () {
+                    AppUtils.launchExternalUrl('https://drive.google.com/file/d/1LrVeL9hbm3ACUph23ZErwDKafBavK9ke/view?usp=sharing');
+                  },
+                  icon: Icon(Icons.download_outlined, size: 16.sp),
+                  label: const Text('Resume'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );

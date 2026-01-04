@@ -10,8 +10,13 @@ class SkillsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 80.w, vertical: 80.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20.w : 80.w, 
+        vertical: isMobile ? 60.h : 80.h
+      ),
       width: double.infinity,
       color: AppColors.surface,
       child: Column(
@@ -25,42 +30,70 @@ class SkillsSection extends StatelessWidget {
           SizedBox(height: 32.h),
 
           // Skill Categories
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _SkillCategory(
-                  title: 'Mobile Development',
-                  icon: Icons.phone_android_outlined,
-                  skills: ['Flutter', 'Dart', 'Android (Kotlin)'],
-                ),
+          isMobile 
+            ? Column(
+                children: [
+                  _SkillCategory(
+                    title: 'Mobile Development',
+                    icon: Icons.phone_android_outlined,
+                    skills: ['Flutter', 'Dart', 'Android (Kotlin)'],
+                  ),
+                  SizedBox(height: 16.h),
+                  _SkillCategory(
+                    title: 'Backend & APIs',
+                    icon: Icons.api_outlined,
+                    skills: ['REST API Integration', 'Firebase', 'WebSocket'],
+                  ),
+                  SizedBox(height: 16.h),
+                  _SkillCategory(
+                    title: 'State Management',
+                    icon: Icons.settings_outlined,
+                    skills: ['Bloc', 'GetX', 'ValueNotifier'],
+                  ),
+                  SizedBox(height: 16.h),
+                  _SkillCategory(
+                    title: 'Tools & Testing',
+                    icon: Icons.build_outlined,
+                    skills: ['GitHub', 'Postman', 'Jira'],
+                  ),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _SkillCategory(
+                      title: 'Mobile Development',
+                      icon: Icons.phone_android_outlined,
+                      skills: ['Flutter', 'Dart', 'Android (Kotlin)'],
+                    ),
+                  ),
+                  SizedBox(width: 24.w),
+                  Expanded(
+                    child: _SkillCategory(
+                      title: 'Backend & APIs',
+                      icon: Icons.api_outlined,
+                      skills: ['REST API Integration', 'Firebase', 'WebSocket'],
+                    ),
+                  ),
+                  SizedBox(width: 24.w),
+                  Expanded(
+                    child: _SkillCategory(
+                      title: 'State Management',
+                      icon: Icons.settings_outlined,
+                      skills: ['Bloc', 'GetX', 'ValueNotifier'],
+                    ),
+                  ),
+                  SizedBox(width: 24.w),
+                  Expanded(
+                    child: _SkillCategory(
+                      title: 'Tools & Testing',
+                      icon: Icons.build_outlined,
+                      skills: ['GitHub', 'Postman', 'Jira'],
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(width: 24.w),
-              Expanded(
-                child: _SkillCategory(
-                  title: 'Backend & APIs',
-                  icon: Icons.api_outlined,
-                  skills: ['REST API Integration', 'Firebase', 'WebSocket'],
-                ),
-              ),
-              SizedBox(width: 24.w),
-              Expanded(
-                child: _SkillCategory(
-                  title: 'State Management',
-                  icon: Icons.settings_outlined,
-                  skills: ['Bloc', 'GetX', 'ValueNotifier'],
-                ),
-              ),
-              SizedBox(width: 24.w),
-              Expanded(
-                child: _SkillCategory(
-                  title: 'Tools & Testing',
-                  icon: Icons.build_outlined,
-                  skills: ['GitHub', 'Postman', 'Jira'],
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );

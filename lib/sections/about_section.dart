@@ -10,9 +10,14 @@ class AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 80.w, vertical: 100.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20.w : 80.w, 
+        vertical: isMobile ? 60.h : 100.h
+      ),
       color: AppColors.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,127 +29,143 @@ class AboutSection extends StatelessWidget {
 
           SizedBox(height: 48.h),
 
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// LEFT — ABOUT TEXT
-              Expanded(
-                flex: 3,
-                child: AnimatedCard(
-                  child: Padding(
-                    padding: EdgeInsets.all(32.w),
-                    child: Text(
-                      PortfolioData.summary,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        height: 1.7,
-                        color: AppColors.textPrimary,
+          isMobile 
+            ? Column(
+                children: [
+                  /// ABOUT TEXT
+                  AnimatedCard(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.w),
+                      child: Text(
+                        PortfolioData.summary,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          height: 1.7,
+                          fontSize: 14.sp,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
 
-              SizedBox(width: 40.w),
+                  SizedBox(height: 24.h),
 
-              /// TOOLS & LANGUAGES
-              Expanded(
-                flex: 1,
-                child: AnimatedCard(
-                  child: Padding(
-                    padding: EdgeInsets.all(32.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tools & Languages',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.accent,
+                  /// TOOLS & LANGUAGES
+                  AnimatedCard(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tools & Languages',
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.accent,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 24.h),
+                          SizedBox(height: 16.h),
 
-                        Wrap(
-                          spacing: 14.w,
-                          runSpacing: 14.h,
-                          children: PortfolioData.languages.map((item) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 18.w,
-                                vertical: 10.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.accentSoft,
-                                borderRadius: BorderRadius.circular(24.r),
-                                border: Border.all(color: AppColors.border),
-                              ),
-                              child: Text(
-                                item,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.w500,
+                          Wrap(
+                            spacing: 10.w,
+                            runSpacing: 10.h,
+                            children: PortfolioData.languages.map((item) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 14.w,
+                                  vertical: 8.h,
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                                decoration: BoxDecoration(
+                                  color: AppColors.accentSoft,
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  border: Border.all(color: AppColors.border),
+                                ),
+                                child: Text(
+                                  item,
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// LEFT — ABOUT TEXT
+                  Expanded(
+                    flex: 3,
+                    child: AnimatedCard(
+                      child: Padding(
+                        padding: EdgeInsets.all(32.w),
+                        child: Text(
+                          PortfolioData.summary,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            height: 1.7,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width: 40.w),
+
+                  /// TOOLS & LANGUAGES
+                  Expanded(
+                    flex: 1,
+                    child: AnimatedCard(
+                      child: Padding(
+                        padding: EdgeInsets.all(32.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Tools & Languages',
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.accent,
+                              ),
+                            ),
+                            SizedBox(height: 24.h),
+
+                            Wrap(
+                              spacing: 14.w,
+                              runSpacing: 14.h,
+                              children: PortfolioData.languages.map((item) {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 18.w,
+                                    vertical: 10.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.accentSoft,
+                                    borderRadius: BorderRadius.circular(24.r),
+                                    border: Border.all(color: AppColors.border),
+                                  ),
+                                  child: Text(
+                                    item,
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              /// RIGHT — STATS GRID
-             /* Expanded(
-                flex: 2,
-                child: Column(
-                  children: [
-                    Row(
-                      children: const [
-                        Expanded(
-                          child: _StatCard(
-                            icon: Icons.work_outline,
-                            title: '2+',
-                            subtitle: 'Years Experience',
-                            color: AppColors.accent,
-                          ),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: _StatCard(
-                            icon: Icons.apps_outlined,
-                            title: '10+',
-                            subtitle: 'Projects',
-                            color: AppColors.accent,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-                    Row(
-                      children: const [
-                        Expanded(
-                          child: _StatCard(
-                            icon: Icons.mobile_friendly,
-                            title: '5+',
-                            subtitle: 'Live Apps',
-                            color: AppColors.accent,
-                          ),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: _StatCard(
-                            icon: Icons.code,
-                            title: '8+',
-                            subtitle: 'Technologies',
-                            color: AppColors.accent,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),*/
-            ],
-          ),
 
           SizedBox(height: 64.h),
         ],

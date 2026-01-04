@@ -9,8 +9,13 @@ class ExperienceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 80.w, vertical: 80.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20.w : 80.w, 
+        vertical: isMobile ? 60.h : 80.h
+      ),
       width: double.infinity,
       color: AppColors.surface,
       child: Column(
@@ -59,6 +64,8 @@ class _ExperienceCardState extends State<_ExperienceCard>
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -69,8 +76,8 @@ class _ExperienceCardState extends State<_ExperienceCard>
           Column(
             children: [
               Container(
-                width: 16.w,
-                height: 16.w,
+                width: isMobile ? 12.w : 16.w,
+                height: isMobile ? 12.w : 16.w,
                 decoration: BoxDecoration(
                   color: _isHovered ? AppColors.accent : AppColors.accentSoft,
                   shape: BoxShape.circle,
@@ -83,20 +90,20 @@ class _ExperienceCardState extends State<_ExperienceCard>
               if (!widget.isLast)
                 Container(
                   width: 2.w,
-                  height: 120.h,
+                  height: isMobile ? 100.h : 120.h,
                   color: AppColors.border,
                 ),
             ],
           ),
 
-          SizedBox(width: 24.w),
+          SizedBox(width: isMobile ? 16.w : 24.w),
 
           // Content
           Expanded(
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               margin: EdgeInsets.only(bottom: widget.isLast ? 0 : 32.h),
-              padding: EdgeInsets.all(24.w),
+              padding: EdgeInsets.all(isMobile ? 16.w : 24.w),
               decoration: BoxDecoration(
                 color: AppColors.background,
                 borderRadius: BorderRadius.circular(16.r),
@@ -118,43 +125,38 @@ class _ExperienceCardState extends State<_ExperienceCard>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Header
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.experience.position,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.accent,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              widget.experience.company,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                  isMobile 
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            widget.experience.position,
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.accent,
+                            ),
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            widget.experience.company,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                             decoration: BoxDecoration(
                               color: AppColors.accentSoft,
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(10.r),
                             ),
                             child: Text(
                               widget.experience.duration,
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.textPrimary,
                               ),
@@ -165,22 +167,84 @@ class _ExperienceCardState extends State<_ExperienceCard>
                             children: [
                               Icon(
                                 Icons.location_on_outlined,
-                                size: 14.sp,
+                                size: 12.sp,
                                 color: AppColors.textSecondary,
                               ),
                               SizedBox(width: 4.w),
                               Text(
                                 widget.experience.location,
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  fontSize: 12.sp,
                                   color: AppColors.textSecondary,
                                 ),
                               ),
                             ],
                           ),
                         ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.experience.position,
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.accent,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  widget.experience.company,
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                                decoration: BoxDecoration(
+                                  color: AppColors.accentSoft,
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                child: Text(
+                                  widget.experience.duration,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 4.h),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on_outlined,
+                                    size: 14.sp,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    widget.experience.location,
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
 
                   SizedBox(height: 16.h),
 
@@ -206,6 +270,7 @@ class _ExperienceCardState extends State<_ExperienceCard>
                               child: Text(
                                 responsibility,
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontSize: isMobile ? 14.sp : null,
                                   height: 1.5,
                                   color: AppColors.textPrimary,
                                 ),

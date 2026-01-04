@@ -9,8 +9,13 @@ class ProjectsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 80.w, vertical: 80.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20.w : 80.w, 
+        vertical: isMobile ? 60.h : 80.h
+      ),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,13 +52,15 @@ class _ProjectCardState extends State<_ProjectCard>
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: EdgeInsets.only(bottom: 32.h),
-        padding: EdgeInsets.all(32.w),
+        padding: EdgeInsets.all(isMobile ? 20.w : 32.w),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(20.r),
@@ -77,81 +84,113 @@ class _ProjectCardState extends State<_ProjectCard>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Project Icon
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.accent,
-                        AppColors.accent.withValues(alpha: 0.7),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Icon(
-                    Icons.mobile_friendly_outlined,
-                    color: Colors.white,
-                    size: 32.sp,
-                  ),
-                ),
-                
-                SizedBox(width: 20.w),
-                
-                // Project Info
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.project.title,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.accent,
+            isMobile 
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Project Icon
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.accent,
+                            AppColors.accent.withValues(alpha: 0.7),
+                          ],
                         ),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
-                      SizedBox(height: 6.h),
-                      Text(
-                        widget.project.subtitle,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      child: Icon(
+                        Icons.mobile_friendly_outlined,
+                        color: Colors.white,
+                        size: 24.sp,
                       ),
-                    ],
-                  ),
-                ),
-                
-                /*// Expand Button
-                IconButton(
-                  onPressed: () {
-                    setState(() => _isExpanded = !_isExpanded);
-                  },
-                  icon: AnimatedRotation(
-                    turns: _isExpanded ? 0.5 : 0,
-                    duration: const Duration(milliseconds: 200),
-                    child: Icon(
-                      Icons.expand_more,
-                      color: AppColors.accent,
-                      size: 24.sp,
                     ),
-                  ),
-                ),*/
-              ],
-            ),
+                    
+                    SizedBox(height: 16.h),
+                    
+                    // Project Info
+                    Text(
+                      widget.project.title,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.accent,
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Text(
+                      widget.project.subtitle,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Project Icon
+                    Container(
+                      padding: EdgeInsets.all(16.w),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.accent,
+                            AppColors.accent.withValues(alpha: 0.7),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Icon(
+                        Icons.mobile_friendly_outlined,
+                        color: Colors.white,
+                        size: 32.sp,
+                      ),
+                    ),
+                    
+                    SizedBox(width: 20.w),
+                    
+                    // Project Info
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.project.title,
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.accent,
+                            ),
+                          ),
+                          SizedBox(height: 6.h),
+                          Text(
+                            widget.project.subtitle,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
 
             SizedBox(height: 20.h),
 
             // Technologies
             Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
+              spacing: isMobile ? 6.w : 8.w,
+              runSpacing: isMobile ? 6.h : 8.h,
               children: widget.project.technologies.map((tech) {
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 10.w : 12.w, 
+                    vertical: isMobile ? 4.h : 6.h
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.accentSoft,
                     borderRadius: BorderRadius.circular(16.r),
@@ -160,6 +199,7 @@ class _ProjectCardState extends State<_ProjectCard>
                   child: Text(
                     tech,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: isMobile ? 10.sp : null,
                       fontWeight: FontWeight.w500,
                       color: AppColors.accent,
                     ),
@@ -175,6 +215,7 @@ class _ProjectCardState extends State<_ProjectCard>
                 child: Text(
                   widget.project.description.first,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontSize: isMobile ? 14.sp : null,
                     height: 1.6,
                     color: AppColors.textPrimary,
                   ),
@@ -190,6 +231,7 @@ class _ProjectCardState extends State<_ProjectCard>
                     Text(
                       'Key Features & Achievements:',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontSize: isMobile ? 16.sp : null,
                         fontWeight: FontWeight.w600,
                         color: AppColors.accent,
                       ),
@@ -215,6 +257,7 @@ class _ProjectCardState extends State<_ProjectCard>
                                 child: Text(
                                   desc,
                                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontSize: isMobile ? 14.sp : null,
                                     height: 1.6,
                                     color: AppColors.textPrimary,
                                   ),
